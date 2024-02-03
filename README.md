@@ -1,4 +1,4 @@
-# NeoChat - Team AsyncWait
+# NeoChat - Team AsyncAwait
 Hackathon project for Bit-N-Build 2024 Hackathon
 
 
