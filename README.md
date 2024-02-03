@@ -1,15 +1,14 @@
 # NeoChat - Team AsyncWait
-Hackathon project for Bit-N-Build Hackathon
+Hackathon project for Bit-N-Build 2024 Hackathon
+
+
+## High level working of the app
 
 1. The user authenticates and provides information.
 
-2. The user then is able to send text, image and voice
-messages to others.
+2. The user then is able to send text, image and voice messages to others.
 
 3. On the receiver’s side, the processing happens. If the receiver is
-
-![Screenshot 2024-02-02 at 10 32 44 PM](https://github.com/ani1609/NeoChat/assets/91966855/3361448c-c391-49b8-a6ba-ec02dd46f62f)
-
 - Deaf: All audio files sent to the receiver is transcribed to text
 which shows up a as a regular text message.
 - Color-blind: All image files go through a color filter to assist
@@ -20,4 +19,4 @@ monochromacy.
 - Blind: All text messages sent to the receiver is synthesized to
 speech which shows up a voice message.
 
-![BridgeTogether DFD](https://github.com/ani1609/NeoChat/assets/91966855/711ee745-8189-4ead-a689-091fb91a0ff2)
+![BridgeTogether DFD](https://github.com/ani1609/NeoChat/assets/124783808/84ab96b1-841d-4efc-b87e-5dc5c20e535b)
