@@ -66,7 +66,7 @@ function ChatMessage(props) {
         ) : (
           !audioURL && <p>{text}</p>
         )}
-        {selectedPreference === 'Deafness' && audioURL ? <p>{transcription}</p> : audioURL && <audio controls src={audioURL}></audio>}
+        {selectedPreference === 'Deafness' && audioURL ? transcription? <p>{transcription}</p> : <p>...</p> : audioURL && <audio controls src={audioURL}></audio>}
         {imageURL && colorBlindness && <img src={imageURL} className={`rounded-xl ${selectedPreference}`} alt="image" style={{ width: '300px', aspectRatio: '[3/2]' }} />}
         {imageURL && !colorBlindness && <img src={imageURL} className="rounded-xl" alt="image" style={{ width: '300px', aspectRatio: '[3/2]' }} />}
         {formattedTime && 
