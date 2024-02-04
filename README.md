@@ -1,6 +1,5 @@
 # NeoChat - Team AsyncAwait
-Hackathon project for Bit-N-Build 2024 Hackathon
-
+>A modern chat app that puts inclusivity first and allows seamless conversation between the disabled and others.
 
 ## High level working of the app
 
