@@ -22,7 +22,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgs
 import androidx.navigation.navArgument
 import com.bera.inclusive_chat_app.presentation.chat.ChatScreen
 import com.bera.inclusive_chat_app.presentation.chat.ChatViewModel
@@ -38,9 +37,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import org.koin.android.ext.android.inject
-import org.koin.androidx.compose.koinViewModel
 import org.koin.androidx.compose.navigation.koinNavViewModel
 import org.koin.core.parameter.parametersOf
+
 
 class MainActivity : ComponentActivity() {
 

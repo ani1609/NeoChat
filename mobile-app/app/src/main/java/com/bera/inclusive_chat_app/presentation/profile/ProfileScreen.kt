@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.bera.inclusive_chat_app.domain.models.Person
 import com.bera.inclusive_chat_app.presentation.chat.UserType
+import com.bera.inclusive_chat_app.ui.theme.Purple40
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -49,7 +50,7 @@ fun ProfileScreen(
     navigate: (String) -> Unit
 ) {
     var isDropDownExpanded by remember { mutableStateOf(false) }
-    var userType by rememberSaveable { mutableStateOf(UserType.NORMAL.name) }
+    var userType by rememberSaveable { mutableStateOf(UserType.Normal.name) }
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -77,7 +78,7 @@ fun ProfileScreen(
         }
         ExposedDropdownMenuBox(
             modifier = Modifier
-                .width(120.dp)
+                .width(180.dp)
                 .height(40.dp),
             expanded = isDropDownExpanded,
             onExpandedChange = { isDropDownExpanded = !isDropDownExpanded }) {
@@ -85,7 +86,7 @@ fun ProfileScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .clip(RoundedCornerShape(4.dp))
-                    .background(Color(0xFF323A69))
+                    .background(Purple40)
                     .menuAnchor(),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
@@ -105,7 +106,7 @@ fun ProfileScreen(
                 )
             }
             ExposedDropdownMenu(
-                modifier = Modifier.width(118.dp),
+                modifier = Modifier.width(178.dp),
                 expanded = isDropDownExpanded,
                 onDismissRequest = { isDropDownExpanded = false }) {
                 UserType.entries.forEach {
@@ -118,15 +119,15 @@ fun ProfileScreen(
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF323A69)), onClick = {
+        Spacer(modifier = Modifier.height(20.dp))
+        Button(colors = ButtonDefaults.buttonColors(containerColor = Purple40), onClick = {
             navigate("chat/${userType}")
         }) {
             Text(text = "Go to chat")
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF323A69)),
+            colors = ButtonDefaults.buttonColors(containerColor = Purple40),
             onClick = onSignOut
         ) {
             Text(text = "Sign out")

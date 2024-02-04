@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -21,6 +23,15 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        buildFeatures.buildConfig = true
+
+        val properties = Properties()
+        properties.load(File("local.properties").inputStream())
+
+        buildConfigField("String", "FIREBASE_STORAGE_PATH", "\"${properties.getProperty("FIREBASE_STORAGE_PATH") ?: System.getenv("FIREBASE_STORAGE_PATH")}\"")
+        buildConfigField("String", "ASSEMBLY_AI_KEY", "\"${properties.getProperty("ASSEMBLY_AI_KEY") ?: System.getenv("ASSEMBLY_AI_KEY")!!}\"")
+        buildConfigField("String", "FIREBASE_STORAGE_URL", "\"${properties.getProperty("FIREBASE_STORAGE_URL") ?: System.getenv("FIREBASE_STORAGE_URL")!!}\"")
     }
 
     buildTypes {
@@ -113,5 +124,5 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:20.3.0")
 
     implementation("com.assemblyai:assemblyai-java:1.0.2")
-
+    implementation("com.cloudinary:kotlin-url-gen:1.1.0")
 }

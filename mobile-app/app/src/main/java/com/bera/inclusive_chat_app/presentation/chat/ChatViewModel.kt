@@ -1,6 +1,8 @@
 package com.bera.inclusive_chat_app.presentation.chat
 
+import android.content.Context
 import android.net.Uri
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import java.io.File
+import java.util.Locale
 import java.util.UUID
 
 class ChatViewModel(
@@ -54,6 +57,7 @@ class ChatViewModel(
     private var sttClient: AssemblyAI = AssemblyAI.builder()
         .apiKey(Constants.assemblyAiKey)
         .build()
+    private var textToSpeech:TextToSpeech? = null
 
     init {
         db.collection("messages")
@@ -64,7 +68,7 @@ class ChatViewModel(
             .onEach { value ->
                 val msgResult = value.documents
                 when (userType) {
-                    UserType.DEAF ->
+                    UserType.Deafness ->
                         messages = msgResult.mapNotNull { doc ->
                             Message(
                                 text = doc.getString("text") ?: "",
@@ -80,39 +84,7 @@ class ChatViewModel(
 
                         }
 
-                    UserType.COLOR_BLIND -> {
-                        messages = msgResult.mapNotNull { doc ->
-                            Message(
-                                text = doc.getString("text") ?: "",
-                                id = doc.id,
-                                uid = doc.getString("uid") ?: "",
-                                createdAt = doc.getTimestamp("createdAt")
-                                    ?: Timestamp.now(),
-                                photoUrl = doc.getString("photoUrl") ?: "",
-                                auth = auth,
-                                audioUrl = "",
-                                audioPath = ""
-                            )
-                        }
-                    }
-
-                    UserType.BLIND -> {
-                        messages = msgResult.mapNotNull { doc ->
-                            Message(
-                                text = doc.getString("text") ?: "",
-                                id = doc.id,
-                                uid = doc.getString("uid") ?: "",
-                                createdAt = doc.getTimestamp("createdAt")
-                                    ?: Timestamp.now(),
-                                photoUrl = doc.getString("photoUrl") ?: "",
-                                auth = auth,
-                                audioUrl = "",
-                                audioPath = ""
-                            )
-                        }
-                    }
-
-                    UserType.NORMAL -> {
+                    else -> {
                         messages = msgResult.mapNotNull { doc ->
                             doc?.getString("audioPath")?.let {
                                 if (it.isBlank()) {
@@ -284,6 +256,25 @@ class ChatViewModel(
             db.collection("messages")
                 .add(message)
                 .await()
+        }
+    }
+
+    fun textToSpeech(text: String, context: Context){
+        textToSpeech = TextToSpeech(
+            context
+        ) {
+            if (it == TextToSpeech.SUCCESS) {
+                textToSpeech?.let { txtToSpeech ->
+                    txtToSpeech.language = Locale.ENGLISH
+                    txtToSpeech.setSpeechRate(1.0f)
+                    txtToSpeech.speak(
+                        text,
+                        TextToSpeech.QUEUE_ADD,
+                        null,
+                        null
+                    )
+                }
+            }
         }
     }
 

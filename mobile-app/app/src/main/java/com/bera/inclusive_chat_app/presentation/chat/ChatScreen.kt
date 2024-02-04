@@ -25,21 +25,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Mic
 import androidx.compose.material.icons.filled.Send
 import androidx.compose.material.icons.filled.Stop
-import androidx.compose.material.icons.rounded.ArrowDropDown
-import androidx.compose.material.icons.rounded.ArrowDropUp
 import androidx.compose.material.icons.rounded.Image
 import androidx.compose.material.icons.rounded.PlayArrow
 import androidx.compose.material.icons.rounded.Stop
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,14 +47,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.ColorMatrix
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.SubcomposeAsyncImage
+import com.bera.inclusive_chat_app.ui.theme.Pink40
+import com.bera.inclusive_chat_app.ui.theme.Purple40
 import kotlinx.coroutines.launch
 import java.io.File
 
@@ -69,6 +67,7 @@ fun ChatScreen(
     navigateBackToProfile: () -> Unit,
 ) {
     val messages = viewModel.messages
+    val userType = viewModel.userType
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     var chatBoxValue by rememberSaveable { mutableStateOf("") }
@@ -163,7 +162,7 @@ fun ChatScreen(
                     },
                     colors = IconButtonDefaults
                         .iconButtonColors(
-                            containerColor = Color(0xFF323A69)
+                            Purple40
                         )
                 ) {
                     if (!viewModel.recordState)
@@ -206,9 +205,9 @@ fun ChatScreen(
                             .padding(horizontal = 8.dp, vertical = 2.dp)
                             .background(
                                 color = if (message.isFromMe) {
-                                    Color(0xFF323A69)
+                                    Purple40
                                 } else {
-                                    Color(0xFF2F756F)
+                                    Pink40
                                 },
                                 shape = RoundedCornerShape(
                                     topStart = 24f,
@@ -236,6 +235,83 @@ fun ChatScreen(
                             }
                             message.photoUrl.also {
                                 if (it.isNotEmpty()) {
+                                    val colorFilter = ColorFilter.colorMatrix(
+                                        ColorMatrix(
+                                            when (userType) {
+                                                UserType.Protanopia -> floatArrayOf(
+                                                    0.567F, 0.433F, 0F, 0F, 0F,
+                                                    0.558F, 0.442F, 0F, 0F, 0F,
+                                                    0F, 0.242F, 0.758F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                UserType.Protanomaly -> floatArrayOf(
+                                                    0.817F, 0.183F, 0F, 0F, 0F,
+                                                    0.333F, 0.667F, 0F, 0F, 0F,
+                                                    0F, 0.125F, 0.875F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                UserType.Deuteranopia -> floatArrayOf(
+                                                    0.625F, 0.375F, 0F, 0F, 0F,
+                                                    0.7F, 0.3F, 0F, 0F, 0F,
+                                                    0F, 0.3F, 0.7F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                UserType.Deuteranomaly -> floatArrayOf(
+                                                    0.8F, 0.2F, 0F, 0F, 0F,
+                                                    0.258F, 0.742F, 0F, 0F, 0F,
+                                                    0F, 0.142F, 0.858F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                UserType.Tritanopia -> floatArrayOf(
+                                                    0.95F, 0.05F, 0F, 0F, 0F,
+                                                    0F, 0.433F, 0.567F, 0F, 0F,
+                                                    0F, 0.475F, 0.525F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                UserType.Tritanomaly -> floatArrayOf(
+                                                    0.967F, 0.033F, 0F, 0F, 0F,
+                                                    0F, 0.733F, 0.267F, 0F, 0F,
+                                                    0F, 0.183F, 0.817F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                UserType.Achromatopsia -> floatArrayOf(
+                                                    0.299F, 0.587F, 0.114F, 0F, 0F,
+                                                    0.299F, 0.587F, 0.114F, 0F, 0F,
+                                                    0.299F, 0.587F, 0.114F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                UserType.Achromatomaly -> floatArrayOf(
+                                                    0.618F, 0.32F, 0.062F, 0F, 0F,
+                                                    0.163F, 0.775F, 0.062F, 0F, 0F,
+                                                    0.163F, 0.32F, 0.516F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+
+                                                else -> floatArrayOf(
+                                                    1F, 0F, 0F, 0F, 0F,
+                                                    0F, 1F, 0F, 0F, 0F,
+                                                    0F, 0F, 1F, 0F, 0F,
+                                                    0F, 0F, 0F, 1F, 0F,
+                                                    0F, 0F, 0F, 0F, 1F
+                                                )
+                                            }
+                                        )
+                                    )
                                     SubcomposeAsyncImage(
                                         modifier = Modifier.clip(RoundedCornerShape(8.dp)),
                                         model = it,
@@ -250,7 +326,8 @@ fun ChatScreen(
                                                 color = Color.White
                                             )
                                         },
-                                        contentDescription = "image"
+                                        contentDescription = "image",
+                                        colorFilter = colorFilter
                                     )
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
@@ -283,11 +360,21 @@ fun ChatScreen(
                             }
                             message.text.also {
                                 if (it.isNotEmpty()) {
-                                    Text(
-                                        text = it,
-                                        color = Color.White,
-                                        style = MaterialTheme.typography.bodyMedium
-                                    )
+                                    when (userType) {
+                                        UserType.Blindness -> Button(onClick = {
+                                            viewModel.textToSpeech(
+                                                it,
+                                                context
+                                            )
+                                        }) {
+                                            Text(text = "Hear text", color = Color.White)
+                                        }
+                                        else -> Text(
+                                            text = it,
+                                            color = Color.White,
+                                            style = MaterialTheme.typography.bodyMedium
+                                        )
+                                    }
                                 }
                                 Spacer(modifier = Modifier.height(6.dp))
                             }
